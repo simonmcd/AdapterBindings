@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion Versions.compileSdk
+    defaultConfig {
+        applicationId "com.simonmcd.adapterbindings"
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    implementation project(":recyclerview")
+    implementation Libs.appCompat
+    implementation Libs.kotlinStdLib
+    implementation Libs.constraintLayout
+    implementation Libs.recyclerView
+    kapt Libs.archCompiler
+    implementation Libs.archExtensions
+}
