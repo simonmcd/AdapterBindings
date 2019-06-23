@@ -18,15 +18,17 @@ class BindableViewHolder<T : BaseObservable, VIEW_BINDING : ViewDataBinding>(
 
     init {
         if (viewHolderListener != null) {
-            val attrs = intArrayOf(R.attr.selectableItemBackground)
-            val typedArray = viewBinding.root.context.obtainStyledAttributes(attrs)
-            val backgroundResource = typedArray.getResourceId(0, 0)
-            viewBinding.root.setBackgroundResource(backgroundResource)
-            typedArray.recycle()
-            viewBinding.root.isClickable = true
-            viewBinding.root.isFocusable = true
-            viewBinding.root.setOnClickListener {
-                boundItem?.let { item -> viewHolderListener.onRowClick(item) }
+            if (viewHolderListener.rowIsClickable()) {
+                val attrs = intArrayOf(R.attr.selectableItemBackground)
+                val typedArray = viewBinding.root.context.obtainStyledAttributes(attrs)
+                val backgroundResource = typedArray.getResourceId(0, 0)
+                viewBinding.root.setBackgroundResource(backgroundResource)
+                typedArray.recycle()
+                viewBinding.root.isClickable = true
+                viewBinding.root.isFocusable = true
+                viewBinding.root.setOnClickListener {
+                    boundItem?.let { item -> viewHolderListener.onRowClick(item) }
+                }
             }
             viewHolderListener.onCreated(viewBinding, this)
         }
