@@ -24,11 +24,11 @@
         android:text="@{viewModel.displayText}"/>
 
     <ImageButton
+        android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_close"
-        android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> viewModel.remove()}"/>
+        android:background="?attr/selectableItemBackground"/>
 
   </LinearLayout>
 

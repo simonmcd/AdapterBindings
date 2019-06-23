@@ -9,15 +9,15 @@ import com.simonmcd.adapterbindings.recyclerview.R
 /**
  * ViewHolder that uses databinding to populate the fields for a View.
  */
-class BindableViewHolder<T : BaseObservable>(
-    private val viewBinding: ViewDataBinding,
-    clickListener: BindableRecyclerViewAdapter.RowClickListener<T>?
+class BindableViewHolder<T : BaseObservable, VIEW_BINDING : ViewDataBinding>(
+    val viewBinding: VIEW_BINDING,
+    viewHolderListener: BindableViewHolderListener<T, VIEW_BINDING>?
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
     private var boundItem: T? = null
 
     init {
-        if (clickListener != null) {
+        if (viewHolderListener != null) {
             val attrs = intArrayOf(R.attr.selectableItemBackground)
             val typedArray = viewBinding.root.context.obtainStyledAttributes(attrs)
             val backgroundResource = typedArray.getResourceId(0, 0)
@@ -26,8 +26,9 @@ class BindableViewHolder<T : BaseObservable>(
             viewBinding.root.isClickable = true
             viewBinding.root.isFocusable = true
             viewBinding.root.setOnClickListener {
-                boundItem?.let { item -> clickListener.onRowClick(item) }
+                boundItem?.let { item -> viewHolderListener.onRowClick(item) }
             }
+            viewHolderListener.onCreated(viewBinding, this)
         }
     }
 

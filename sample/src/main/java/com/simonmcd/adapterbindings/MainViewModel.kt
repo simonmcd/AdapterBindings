@@ -19,7 +19,7 @@ class MainViewModel : ViewModel() {
         itemListData.value = list
     }
 
-    private fun removeItem(item: ItemRowViewModel) {
+    fun removeItem(item: ItemRowViewModel) {
         val list = getItemList()
         list.remove(item)
         itemListData.value = list

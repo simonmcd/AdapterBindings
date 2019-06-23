@@ -11,29 +11,23 @@ import androidx.recyclerview.widget.ListAdapter
 /**
  * An adapter that binds observable items to Views.
  */
-class BindableRecyclerViewAdapter<T : BaseObservable>(
+class BindableRecyclerViewAdapter<T : BaseObservable, VIEW_BINDING : ViewDataBinding>(
     diffCallback: DiffUtil.ItemCallback<T>, private val
-    layoutResID: Int, private val clickListener: RowClickListener<T>? = null
-) : ListAdapter<T, BindableViewHolder<T>>(diffCallback) {
+    layoutResID: Int, private val viewHolderListener: BindableViewHolderListener<T, VIEW_BINDING>? = null
+) : ListAdapter<T, BindableViewHolder<T, VIEW_BINDING>>(diffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder<T> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder<T, VIEW_BINDING> {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val viewBinding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, layoutResID, parent, false)
-        return BindableViewHolder(viewBinding, clickListener)
+        val viewBinding: VIEW_BINDING = DataBindingUtil.inflate(layoutInflater, layoutResID, parent, false)
+        return BindableViewHolder(viewBinding, viewHolderListener)
     }
 
-    override fun onBindViewHolder(holder: BindableViewHolder<T>, position: Int) {
+    override fun onBindViewHolder(holder: BindableViewHolder<T, VIEW_BINDING>, position: Int) {
         holder.bind(getItem(position))
     }
 
     /**
-     * Handles taps on adapter rows.
+     * The item at the specified [position].
      */
-    interface RowClickListener<ITEM> {
-
-        /**
-         * Fired when the user taps on a specific row and passes the [item] for that row.
-         */
-        fun onRowClick(item: ITEM)
-    }
+    fun getBindableItem(position: Int): T = getItem(position)
 }
